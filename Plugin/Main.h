@@ -83,6 +83,7 @@ public:
 	long aSetRandomness(LPVAL params);
 	long aSetSparseness(LPVAL params);
 	long aSetTileSize(LPVAL params);
+	long aSetRoomCount(LPVAL params);
 
 	//param getters
 	long eSeed(LPVAL params, ExpReturn& ret) { return ret = options.seed; }
@@ -91,6 +92,8 @@ public:
 	long eRandomness(LPVAL params, ExpReturn& ret) { return ret = options.randomness; }
 	long eSparseness(LPVAL params, ExpReturn& ret) { return ret = options.sparseness; }
 	long eTileSize(LPVAL params, ExpReturn& ret) { return ret = options.tileSize; }
+	long eMaxRooms(LPVAL params, ExpReturn& ret) { return ret = options.maxRoomCount; }
+	long eMinRooms(LPVAL params, ExpReturn& ret) { return ret = options.minRoomCount; }
 
 	////////////////////////////////////////////////////
 	// Data members

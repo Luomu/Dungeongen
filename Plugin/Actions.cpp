@@ -16,9 +16,24 @@ long ExtObject::aGenerate(LPVAL params)
 long ExtObject::aBuildToLayout(LPVAL params)
 {
 	CRunObjType* objtype = pRuntime->GetTypeFromName("block");
-	if(objtype == 0)
+	CRunLayout* layout = pLayout;
+	CRunLayer* layer = params[0].GetLayerParam(pRuntime, layout);
+	if(layer == 0)
 		return 0;
+	if(objtype == 0)
+		throw DException("Unknown objtype");
 
+	//maze should be generated at this point!
+	for(unsigned int y = 0; y < dungeon->getY(); ++y) {
+		for(unsigned int x = 0; x < dungeon->getX(); ++x) {
+			if(dungeon->getDungeonAt(x, y, 0) == JBDungeon::c_WALL) {
+				CRunObject* obj = pRuntime->CreateObject(objtype, layer->number, layout);
+				obj->info.x = x * options.tileSize;
+				obj->info.y = y * options.tileSize;
+				obj->UpdateBoundingBox();
+			}
+		}
+	}
 	return 0;
 }
 
@@ -53,5 +68,12 @@ long ExtObject::aSetSparseness(LPVAL params)
 long ExtObject::aSetTileSize(LPVAL params)
 {
 	options.tileSize = params[0].GetInt();
+	return 0;
+}
+
+long ExtObject::aSetRoomCount(LPVAL params)
+{
+	options.maxRoomCount = params[0].GetInt();
+	options.minRoomCount = params[1].GetInt();
 	return 0;
 }

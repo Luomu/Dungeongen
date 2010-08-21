@@ -33,6 +33,8 @@ void DefineACES(MicroAceTime* at)
 	//ADDPARAM(PARAM_VALUE, "Example parameter", "Here is an example parameter.");
 	//ADDACT("My action", "My category", "Example action (%0)", &ExtObject::aMyAction, "MyAction", 0);
 	ADDACT("Generate", "Generation", "Generate", &ExtObject::aGenerate, "Generate", 0);
+	ADDPARAMDEF(PARAM_VALUE, "Layer", "Layer name or number to build the dungeon on.", "1");
+	ADDACT("Build to layer", "Generation", "Build to layer %0", &ExtObject::aBuildToLayout, "BuildToLayer", 0);
 	//begin parameter actions
 	ADDPARAM(PARAM_VALUE, "Seed", "Seed to base randomization on.");
 	ADDACT("Set seed", "Parameters", "Set seed to %0", &ExtObject::aSetSeed, "SetSeed", 0);
@@ -47,8 +49,13 @@ void DefineACES(MicroAceTime* at)
 	ADDPARAM(PARAM_VALUE, "Sparseness", "Sparseness 0-100%");
 	ADDACT("Set Sparseness", "Parameters", "Set Sparseness to %0%", &ExtObject::aSetSparseness, "SetSparseness", 0);
 
-	ADDPARAM(PARAM_VALUE, "Tile size", "Dungeon tile size in pixels");
+	ADDPARAM(PARAM_VALUE, "Tile size", "Dungeon tile size in pixels.");
 	ADDACT("Set Tile size", "Parameters", "Set Tile size to %0%", &ExtObject::aSetTileSize, "SetTileSize", 0);
+
+	ADDPARAM(PARAM_VALUE, "Maximum room count", "Largest possible room count.");
+	ADDPARAM(PARAM_VALUE, "Minimum room count", "Minimum number of rooms.");
+	ADDACT("Set room count", "Parameters", "Set room count (%0 maximum, %1 minimum)",
+		&ExtObject::aSetRoomCount, "SetRoomCount", 0);
 	//end parameter actions
 
 	/////////////////////////////
@@ -61,6 +68,8 @@ void DefineACES(MicroAceTime* at)
 	ADDEXP("Randomness", "Parameters", "Randomness", &ExtObject::eRandomness, RETURN_INTEGER);
 	ADDEXP("Sparseness", "Parameters", "Sparseness", &ExtObject::eSparseness, RETURN_INTEGER);
 	ADDEXP("Tile size", "Parameters", "TileSize", &ExtObject::eTileSize, RETURN_INTEGER);
+	ADDEXP("Maximum room count", "Parameters", "MaxRoomCount", &ExtObject::eMaxRoomCount, RETURN_INTEGER);
+	ADDEXP("Minimum room count", "Parameters", "MinRoomCount", &ExtObject::eMinRoomCount, RETURN_INTEGER);
 	// This line includes your common ACEs as specified in Main.h
 #include "..\Common\CommonAceTable.hpp"
 }
