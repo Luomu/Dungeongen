@@ -7,8 +7,8 @@ public:
 	Options() : JBDungeonOptions(),
 		tileSize(32)
 	{
-		secretDoors = 0;
-		concealedDoors = 0;
+		//secretDoors = 0;
+		//concealedDoors = 0;
 	}
 
 	int tileSize;

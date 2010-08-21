@@ -35,6 +35,10 @@ void DefineACES(MicroAceTime* at)
 	ADDACT("Generate", "Generation", "Generate", &ExtObject::aGenerate, "Generate", 0);
 	ADDPARAMDEF(PARAM_VALUE, "Layer", "Layer name or number to build the dungeon on.", "1");
 	ADDACT("Build to layer", "Generation", "Build to layer %0", &ExtObject::aBuildToLayout, "BuildToLayer", 0);
+
+	ADDPARAM(PARAM_VALUE, "Tile type", "Tile type (0 = empty, 1 = wall, 2 = door)");
+	ADDPARAM(PARAM_OBJECT, "Object", "Object to represent the tile");
+	ADDACT("Set objet mapping", "Generation", "Use %1 with tile type %0", &ExtObject::aSetObjectMapping, "SetObjectMapping", 0); 
 	//begin parameter actions
 	ADDPARAM(PARAM_VALUE, "Seed", "Seed to base randomization on.");
 	ADDACT("Set seed", "Parameters", "Set seed to %0", &ExtObject::aSetSeed, "SetSeed", 0);
@@ -50,7 +54,7 @@ void DefineACES(MicroAceTime* at)
 	ADDACT("Set Sparseness", "Parameters", "Set Sparseness to %0%", &ExtObject::aSetSparseness, "SetSparseness", 0);
 
 	ADDPARAM(PARAM_VALUE, "Tile size", "Dungeon tile size in pixels.");
-	ADDACT("Set Tile size", "Parameters", "Set Tile size to %0%", &ExtObject::aSetTileSize, "SetTileSize", 0);
+	ADDACT("Set Tile size", "Parameters", "Set Tile size to %0 pixels", &ExtObject::aSetTileSize, "SetTileSize", 0);
 
 	ADDPARAM(PARAM_VALUE, "Maximum room count", "Largest possible room count.");
 	ADDPARAM(PARAM_VALUE, "Minimum room count", "Minimum number of rooms.");
