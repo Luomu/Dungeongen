@@ -46,6 +46,9 @@ void DefineACES(MicroAceTime* at)
 	// Expressions
 	// ADDEXP(List name, Category, Display string, Function address, Flags)
 	//ADDEXP("My expression", "My category", "MyExpression", &ExtObject::eMyExpression, RETURN_INTEGER);
+	ADDEXP("Seed", "Parameters", "Seed", &ExtObject::eSeed, RETURN_INTEGER);
+	ADDEXP("Width", "Parameters", "Width", &ExtObject::eWidth, RETURN_INTEGER);
+	ADDEXP("Height", "Parameters", "Height", &ExtObject::eHeight, RETURN_INTEGER);
 	// This line includes your common ACEs as specified in Main.h
 #include "..\Common\CommonAceTable.hpp"
 }

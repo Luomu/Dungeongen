@@ -81,7 +81,10 @@ public:
 	long aSetSeed(LPVAL params);
 	long aSetSize(LPVAL params);
 
-	//long eMyExpression(LPVAL params, ExpReturn& ret);
+	//param getters
+	long eSeed(LPVAL params, ExpReturn& ret) { return ret = options.seed; }
+	long eWidth(LPVAL params, ExpReturn& ret) { return ret = options.size.x; }
+	long eHeight(LPVAL params, ExpReturn& ret) { return ret = options.size.y; }
 
 	////////////////////////////////////////////////////
 	// Data members
