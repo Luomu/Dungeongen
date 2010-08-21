@@ -17,6 +17,7 @@ ExtObject::ExtObject(initialObject* editObject, VRuntime* pVRuntime)
 {
 	pRuntime = pVRuntime;
 	info.editObject = editObject;
+	dungeon = 0;
 }
 
 // This is called just after the constructor when your object has been created.  Construct has set
@@ -50,6 +51,7 @@ void ExtObject::OnCreate()
 // Destructor: called when an instance of your object is destroyed.
 ExtObject::~ExtObject()
 {
+	delete dungeon; dungeon = 0;
 }
 
 // Called every frame, before the events and after drawing, for you to update your object if necessary

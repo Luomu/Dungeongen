@@ -23,6 +23,8 @@
 
 #include "..\Common\ExpReturn.hpp"
 #include "jbdungeon.h"
+#include "options.h"
+#include "exceptions.h"
 
 #define OBJECTRECT CRect(editObject->objectX, editObject->objectY, editObject->objectX + editObject->objectWidth, editObject->objectY + editObject->objectHeight)
 
@@ -73,6 +75,11 @@ public:
 	//long cMyCondition(LPVAL params);
 
 	//long aMyAction(LPVAL params);
+	long aGenerate(LPVAL params);
+	long aBuildToLayout(LPVAL params);
+	//param setters
+	long aSetSeed(LPVAL params);
+	long aSetSize(LPVAL params);
 
 	//long eMyExpression(LPVAL params, ExpReturn& ret);
 
@@ -81,7 +88,8 @@ public:
 
 	// Use when private variables (OF_PRIVATEVARIABLES) are enabled.
 private:
-	JBDungeon dungeon;
+	JBDungeon* dungeon;
+	Options options;
 };
 
 //////////// EDITTIME INFO ////////////

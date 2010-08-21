@@ -208,7 +208,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				OptimizeForWindows98="1"
+				OptimizeForWindows98="0"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
 				ImportLibrary="Runtime/ConstructSDK.lib"
@@ -952,7 +952,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\exceptions.h"
+				>
+			</File>
+			<File
 				RelativePath="Main.h"
+				>
+			</File>
+			<File
+				RelativePath=".\options.h"
 				>
 			</File>
 			<File
@@ -993,7 +1001,7 @@
 				>
 			</File>
 			<File
-				RelativePath="res\ICON.BMP"
+				RelativePath="ICON.BMP"
 				>
 				<FileConfiguration
 					Name="Runtime|Win32"
@@ -1005,7 +1013,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="ICON.BMP"
+				RelativePath="res\ICON.BMP"
 				>
 				<FileConfiguration
 					Name="Runtime|Win32"

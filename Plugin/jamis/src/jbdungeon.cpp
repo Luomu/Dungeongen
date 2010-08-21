@@ -31,7 +31,7 @@ JBDungeonOptions::JBDungeonOptions() {
   end.y = -1;
   end.z = -1;
 
-  seed = time(NULL);
+  seed = static_cast<int>(time(NULL));
   randomness = 100;
   sparseness = 0;
   clearDeadends = 0;

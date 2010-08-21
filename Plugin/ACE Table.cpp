@@ -32,8 +32,16 @@ void DefineACES(MicroAceTime* at)
 	// ADDCND(List name, Category, Display string, Function address, Script name, Flags)
 	//ADDPARAM(PARAM_VALUE, "Example parameter", "Here is an example parameter.");
 	//ADDACT("My action", "My category", "Example action (%0)", &ExtObject::aMyAction, "MyAction", 0);
+	ADDACT("Generate", "Generation", "Generate", &ExtObject::aGenerate, "Generate", 0);
+	//begin parameter actions
+	ADDPARAM(PARAM_VALUE, "Seed", "Seed to base randomization on.");
+	ADDACT("Set seed", "Parameters", "Set seed %0", &ExtObject::aSetSeed, "SetSeed", 0);
 
-	//Room saving
+	ADDPARAM(PARAM_VALUE, "Width", "Dungeon width (tiles).");
+	ADDPARAM(PARAM_VALUE, "Height", "Dungeon height (tiles).");
+	ADDACT("Set size", "Parameters", "Set size to %0 by %1", &ExtObject::aSetSize, "SetSize", 0);
+	//end parameter actions
+
 	/////////////////////////////
 	// Expressions
 	// ADDEXP(List name, Category, Display string, Function address, Flags)
