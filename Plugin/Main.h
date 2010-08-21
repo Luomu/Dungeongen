@@ -80,11 +80,17 @@ public:
 	//param setters
 	long aSetSeed(LPVAL params);
 	long aSetSize(LPVAL params);
+	long aSetRandomness(LPVAL params);
+	long aSetSparseness(LPVAL params);
+	long aSetTileSize(LPVAL params);
 
 	//param getters
 	long eSeed(LPVAL params, ExpReturn& ret) { return ret = options.seed; }
 	long eWidth(LPVAL params, ExpReturn& ret) { return ret = options.size.x; }
 	long eHeight(LPVAL params, ExpReturn& ret) { return ret = options.size.y; }
+	long eRandomness(LPVAL params, ExpReturn& ret) { return ret = options.randomness; }
+	long eSparseness(LPVAL params, ExpReturn& ret) { return ret = options.sparseness; }
+	long eTileSize(LPVAL params, ExpReturn& ret) { return ret = options.tileSize; }
 
 	////////////////////////////////////////////////////
 	// Data members

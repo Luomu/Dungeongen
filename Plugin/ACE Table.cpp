@@ -35,11 +35,20 @@ void DefineACES(MicroAceTime* at)
 	ADDACT("Generate", "Generation", "Generate", &ExtObject::aGenerate, "Generate", 0);
 	//begin parameter actions
 	ADDPARAM(PARAM_VALUE, "Seed", "Seed to base randomization on.");
-	ADDACT("Set seed", "Parameters", "Set seed %0", &ExtObject::aSetSeed, "SetSeed", 0);
+	ADDACT("Set seed", "Parameters", "Set seed to %0", &ExtObject::aSetSeed, "SetSeed", 0);
 
 	ADDPARAM(PARAM_VALUE, "Width", "Dungeon width (tiles).");
 	ADDPARAM(PARAM_VALUE, "Height", "Dungeon height (tiles).");
 	ADDACT("Set size", "Parameters", "Set size to %0 by %1", &ExtObject::aSetSize, "SetSize", 0);
+
+	ADDPARAM(PARAM_VALUE, "Randomness", "Randomness 0-100%");
+	ADDACT("Set randomness", "Parameters", "Set randomness to %0%", &ExtObject::aSetRandomness, "SetRandomness", 0);
+
+	ADDPARAM(PARAM_VALUE, "Sparseness", "Sparseness 0-100%");
+	ADDACT("Set Sparseness", "Parameters", "Set Sparseness to %0%", &ExtObject::aSetSparseness, "SetSparseness", 0);
+
+	ADDPARAM(PARAM_VALUE, "Tile size", "Dungeon tile size in pixels");
+	ADDACT("Set Tile size", "Parameters", "Set Tile size to %0%", &ExtObject::aSetTileSize, "SetTileSize", 0);
 	//end parameter actions
 
 	/////////////////////////////
@@ -49,6 +58,9 @@ void DefineACES(MicroAceTime* at)
 	ADDEXP("Seed", "Parameters", "Seed", &ExtObject::eSeed, RETURN_INTEGER);
 	ADDEXP("Width", "Parameters", "Width", &ExtObject::eWidth, RETURN_INTEGER);
 	ADDEXP("Height", "Parameters", "Height", &ExtObject::eHeight, RETURN_INTEGER);
+	ADDEXP("Randomness", "Parameters", "Randomness", &ExtObject::eRandomness, RETURN_INTEGER);
+	ADDEXP("Sparseness", "Parameters", "Sparseness", &ExtObject::eSparseness, RETURN_INTEGER);
+	ADDEXP("Tile size", "Parameters", "TileSize", &ExtObject::eTileSize, RETURN_INTEGER);
 	// This line includes your common ACEs as specified in Main.h
 #include "..\Common\CommonAceTable.hpp"
 }
