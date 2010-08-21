@@ -66,16 +66,16 @@ END
 
 STRINGTABLE 
 BEGIN
-    OBJ_NAME                "Messenger"
+    OBJ_NAME                "Dungeongen"
     OBJ_AUTHOR              "K. K."
     OBJ_VERSION             "1.00"
-    OBJ_DESCRIPTION         "Plugin to ease message logging"
-    OBJ_DATE                "April 2010"
+    OBJ_DESCRIPTION         "A simple dungeon (maze) generator"
+    OBJ_DATE                "August 2010"
     OBJ_COPYRIGHT           "No copyright"
     OBJ_WEB                 "www.paahdin.com"
     OBJ_EMAIL               "fanmail@paahdin.com"
     IDS_CATEGORY            "Game"
-    IDS_LICENSE             "No license"
+    IDS_LICENSE             "Common sense"
 END
 
 #endif    // English (U.S.) resources
