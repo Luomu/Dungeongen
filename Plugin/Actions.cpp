@@ -88,10 +88,14 @@ long ExtObject::aSetDeadEndsToRemove(LPVAL params)
 
 long ExtObject::aSetRoomDimensions(LPVAL params)
 {
-	options.minRoomX = params[0].GetInt();
-	options.maxRoomX = params[1].GetInt();
-	options.minRoomY = params[2].GetInt();
-	options.maxRoomY = params[3].GetInt();
+	options.minRoomX = params[0].GetInt() > 0 ? params[0].GetInt() : 1;
+	options.maxRoomX = params[1].GetInt() >= options.minRoomX ? params[1].GetInt() : options.minRoomX + 1;
+	options.minRoomY = params[2].GetInt() > 0 ? params[2].GetInt() : 1;
+	options.maxRoomY = params[3].GetInt() >= options.minRoomY ? params[3].GetInt() : options.minRoomY + 1;
+	assert(options.minRoomX > 0);
+	assert(options.maxRoomX >= options.minRoomX);
+	assert(options.minRoomY > 0);
+	assert(options.maxRoomY >= options.minRoomY);
 	return 0;
 }
 

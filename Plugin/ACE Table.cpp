@@ -71,7 +71,7 @@ void DefineACES(MicroAceTime* at)
 	ADDPARAM(PARAM_VALUE, "Minimum height", "Minimum room height in tiles.");
 	ADDPARAM(PARAM_VALUE, "Maximum height", "Maximum room height in tiles.");
 	ADDACT("Set room dimensions", "Parameters",
-		"Set room dimensions to %0-%1 by %2-3",
+		"Set room dimensions to %0-%1 by %2-%3",
 		&ExtObject::aSetRoomDimensions, "SetRoomDimensions", 0);
 
 	ADDPARAM(PARAM_VALUE, "X", "Tile X (column)");
