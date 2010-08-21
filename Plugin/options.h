@@ -9,6 +9,10 @@ public:
 	{
 		//secretDoors = 0;
 		//concealedDoors = 0;
+		minRoomX = 2;
+		maxRoomX = 3;
+		minRoomY = 2;
+		maxRoomY = 3;
 	}
 
 	int tileSize;

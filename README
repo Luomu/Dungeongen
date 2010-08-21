@@ -1,0 +1,25 @@
+Workflow:
+- Set object mapping
+- Set parameters
+- Generate
+- Build to layer
+
+Set object mapping:
+Set (sprite) objects to use with the "build to layer" action.
+Currently there's only 0 = empty space, 1 = wall.
+
+Parameters--
+Tile size: Width/height of one tile in pixels
+Seed: Number to base the randomization on. Same number = always same result.
+Randomness: 0 - very straight corridors, 100 - lots of twists
+Sparseness: 0 - very tight density, 100 - very sparse density
+Dead end removal: percentage of dead ends the generator does its best to remove.
+Room count: max/min.
+Room dimensions: max/min height/width in tiles.
+Size: dungeon width/height in tiles.
+
+Expressions available for all of the above.
+
+For mazes (and other purposes too):
+Starting point in the maze
+Ending point

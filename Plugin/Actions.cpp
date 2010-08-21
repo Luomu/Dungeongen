@@ -74,8 +74,8 @@ long ExtObject::aSetTileSize(LPVAL params)
 
 long ExtObject::aSetRoomCount(LPVAL params)
 {
-	options.maxRoomCount = params[0].GetInt();
-	options.minRoomCount = params[1].GetInt();
+	options.minRoomCount = params[0].GetInt() >= 0 ? params[0].GetInt() : 0;
+	options.maxRoomCount = params[1].GetInt() >= options.minRoomCount ? params[0].GetInt() : options.minRoomCount;
 	return 0;
 }
 
