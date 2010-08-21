@@ -15,7 +15,7 @@ long ExtObject::aGenerate(LPVAL params)
 //set construct objects
 long ExtObject::aBuildToLayout(LPVAL params)
 {
-	CRunObjType* objtype = pRuntime->GetTypeFromName("block");
+	//CRunObjType* objtype = pRuntime->GetTypeFromName("block");
 	CRunLayout* layout = pLayout;
 	CRunLayer* layer = params[0].GetLayerParam(pRuntime, layout);
 	if(layer == 0)
@@ -27,6 +27,7 @@ long ExtObject::aBuildToLayout(LPVAL params)
 	for(unsigned int y = 0; y < dungeon->getY(); ++y) {
 		for(unsigned int x = 0; x < dungeon->getX(); ++x) {
 			if(dungeon->getDungeonAt(x, y, 0) == JBDungeon::c_WALL) {
+				objtype = objtypes[JBDungeon::c_WALL];
 				CRunObject* obj = pRuntime->CreateObject(objtype, layer->number, layout);
 				obj->info.x = x * options.tileSize;
 				obj->info.y = y * options.tileSize;
@@ -75,5 +76,35 @@ long ExtObject::aSetRoomCount(LPVAL params)
 {
 	options.maxRoomCount = params[0].GetInt();
 	options.minRoomCount = params[1].GetInt();
+	return 0;
+}
+
+//percentage of dead ends to clear
+long ExtObject::aSetDeadEndsToRemove(LPVAL params)
+{
+	options.clearDeadends = params[0].GetInt();
+	return 0;
+}
+
+long ExtObject::aSetRoomDimensions(LPVAL params)
+{
+	options.minRoomX = params[0].GetInt();
+	options.maxRoomX = params[1].GetInt();
+	options.minRoomY = params[2].GetInt();
+	options.maxRoomY = params[3].GetInt();
+	return 0;
+}
+
+//starting point for mazes
+long ExtObject::aSetStart(LPVAL params)
+{
+	options.start = JBMazePt(params[0].GetInt(), params[1].GetInt(), 0);
+	return 0;
+}
+
+//goal for mazes
+long ExtObject::aSetEnd(LPVAL params)
+{
+	options.end = JBMazePt(params[0].GetInt(), params[1].GetInt(), 0);
 	return 0;
 }

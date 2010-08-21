@@ -56,6 +56,31 @@ void DefineACES(MicroAceTime* at)
 	ADDPARAM(PARAM_VALUE, "Minimum room count", "Minimum number of rooms.");
 	ADDACT("Set room count", "Parameters", "Set room count (%0 maximum, %1 minimum)",
 		&ExtObject::aSetRoomCount, "SetRoomCount", 0);
+
+	ADDPARAM(PARAM_VALUE, "% to remove", "Percentage of dead ends to remove.");
+	ADDACT("Set dead end removal amount", "Parameters",
+		"Set dead end removal amount to %0%",
+		&ExtObject::aSetDeadEndsToRemove, "SetDeadEndRemovalAmount", 0);
+
+	ADDPARAM(PARAM_VALUE, "Minimum width", "Minimum room width in tiles.");
+	ADDPARAM(PARAM_VALUE, "Maximum width", "Maximum room width in tiles.");
+	ADDPARAM(PARAM_VALUE, "Minimum height", "Minimum room height in tiles.");
+	ADDPARAM(PARAM_VALUE, "Maximum height", "Maximum room height in tiles.");
+	ADDACT("Set room dimensions", "Parameters",
+		"Set room dimensions to %0-%1 by %2-3",
+		&ExtObject::aSetRoomDimensions, "SetRoomDimensions", 0);
+
+	ADDPARAM(PARAM_VALUE, "X", "Tile X (column)");
+	ADDPARAM(PARAM_VALUE, "Y", "Tile Y (row)");
+	ADDACT("Set start", "Mazes",
+		"Set starting point at (%0, %1)",
+		&ExtObject::aSetStart, "SetStart", 0);
+
+	ADDPARAM(PARAM_VALUE, "X", "Tile X (column)");
+	ADDPARAM(PARAM_VALUE, "Y", "Tile Y (row)");
+	ADDACT("Set end", "Mazes",
+		"Set end point at (%0, %1)",
+		&ExtObject::aSetEnd, "SetEnd", 0);
 	//end parameter actions
 
 	/////////////////////////////
@@ -70,6 +95,7 @@ void DefineACES(MicroAceTime* at)
 	ADDEXP("Tile size", "Parameters", "TileSize", &ExtObject::eTileSize, RETURN_INTEGER);
 	ADDEXP("Maximum room count", "Parameters", "MaxRoomCount", &ExtObject::eMaxRoomCount, RETURN_INTEGER);
 	ADDEXP("Minimum room count", "Parameters", "MinRoomCount", &ExtObject::eMinRoomCount, RETURN_INTEGER);
+	ADDEXP("Dead end removal amount", "Parameters", "DeadEndRemovalAmount", &ExtObject::eDeadEnds, RETURN_INTEGER);
 	// This line includes your common ACEs as specified in Main.h
 #include "..\Common\CommonAceTable.hpp"
 }

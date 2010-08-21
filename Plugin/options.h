@@ -6,7 +6,10 @@ class Options : public JBDungeonOptions {
 public:
 	Options() : JBDungeonOptions(),
 		tileSize(32)
-	{ }
+	{
+		secretDoors = 0;
+		concealedDoors = 0;
+	}
 
 	int tileSize;
 };
