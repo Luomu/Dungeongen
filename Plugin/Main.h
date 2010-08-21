@@ -22,6 +22,7 @@
 #define IDE_FLAGS 	OF_NOCOMMONDEBUG | OF_NODRAW
 
 #include "..\Common\ExpReturn.hpp"
+#include "jbdungeon.h"
 
 #define OBJECTRECT CRect(editObject->objectX, editObject->objectY, editObject->objectX + editObject->objectWidth, editObject->objectY + editObject->objectHeight)
 
@@ -79,6 +80,8 @@ public:
 	// Data members
 
 	// Use when private variables (OF_PRIVATEVARIABLES) are enabled.
+private:
+	JBDungeon dungeon;
 };
 
 //////////// EDITTIME INFO ////////////
