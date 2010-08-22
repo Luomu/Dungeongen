@@ -11,6 +11,26 @@ long ExtObject::aGenerate(LPVAL params)
 	return 0;
 }
 
+void ExtObject::drawDoor(const int x, const int y, const int doorType,
+						 const int horiz, CRunLayer* layer)
+{
+	if(horiz) {
+		if(doorType == JBDungeonWall::c_DOOR) {
+			CRunObject* obj = pRuntime->CreateObject(objtypes[3], layer->number, pLayout);
+			obj->info.x = x * options.tileSize;
+			obj->info.y = y * options.tileSize + 16;
+			obj->info.w = options.tileSize;
+			obj->UpdateBoundingBox();
+		}
+	} else {
+			CRunObject* obj = pRuntime->CreateObject(objtypes[3], layer->number, pLayout);
+			obj->info.x = x * options.tileSize + 16;
+			obj->info.y = y * options.tileSize;
+			obj->info.h = options.tileSize;
+			obj->UpdateBoundingBox();
+	}
+}
+
 //after the maze has been generated, create it on the layout using
 //set construct objects
 long ExtObject::aBuildToLayout(LPVAL params)
@@ -24,14 +44,38 @@ long ExtObject::aBuildToLayout(LPVAL params)
 	//maze should be generated at this point!
 	for(unsigned int y = 0; y < dungeon->getY(); ++y) {
 		for(unsigned int x = 0; x < dungeon->getX(); ++x) {
-			unsigned int tile = dungeon->getDungeonAt(x, y, 0) == JBDungeon::c_WALL;
-			if(tile <= 1) {
+			int tile = dungeon->getDungeonAt(x, y, 0);
+			if(tile == JBDungeon::c_WALL) {
 				objtype = objtypes[tile];
 				if(objtype == 0) continue;
 				CRunObject* obj = pRuntime->CreateObject(objtype, layer->number, layout);
 				obj->info.x = x * options.tileSize;
 				obj->info.y = y * options.tileSize;
 				obj->UpdateBoundingBox();
+			}
+		}
+	}
+
+	//walls, doors
+	int wall = 0;
+	for(unsigned int y = 0; y < dungeon->getY() - 1; ++y) {
+		for(unsigned int x = 0; x < dungeon->getX() - 1; ++x) {
+			JBMazePt p1(x, y, 0);
+			JBMazePt p2(x, y+1, 0);
+			JBMazePt p3(x+1, y, 0);
+			wall = dungeon->getWallBetween(p1, p2);
+			if(wall != JBDungeonWall::c_NONE) {
+				drawDoor(x, y, wall, 1, layer);
+					/*CRunObject* obj = pRuntime->CreateObject(objtypes[3], layer->number, layout);
+					obj->info.x = x * options.tileSize;
+					obj->info.y = y * options.tileSize;
+					obj->UpdateBoundingBox();*/
+			}
+			wall = dungeon->getWallBetween(p1, p3);
+			if(wall != JBDungeonWall::c_NONE) {
+				if(wall == JBDungeonWall::c_DOOR) {
+					drawDoor(x, y, wall, 0, layer);
+				}
 			}
 		}
 	}
