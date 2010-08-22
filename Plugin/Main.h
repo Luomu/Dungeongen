@@ -102,6 +102,9 @@ public:
 	long eDeadEnds(LPVAL params, ExpReturn& ret) { return ret = options.clearDeadends; }
 	long eThinWallWidth(LPVAL params, ExpReturn& ret) { return ret = options.thinWallWidth; }
 
+	//non-param expressions
+	long eGetTileAt(LPVAL params, ExpReturn& ret);
+
 	////////////////////////////////////////////////////
 	// Data members
 

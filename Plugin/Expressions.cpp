@@ -24,3 +24,12 @@ long ExtObject::ReturnUndefinedExpression(CString& expName, LPVAL theParams, Exp
 //////////////////////////////////////////////////////////////////////////////////
 // Expressions
 //////////////////////////////////////////////////////////////////////////////////
+long ExtObject::eGetTileAt(LPVAL params, ExpReturn &ret)
+{
+	int x = params[0].GetInt();
+	int y = params[1].GetInt();
+	int retval = 0;
+	if(x >= 0 && x <= dungeon->getX() && y >= 0 && y <= dungeon->getY())
+		retval = dungeon->getDungeonAt(x, y, 0);
+	return ret = retval;
+}
