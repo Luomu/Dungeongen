@@ -36,9 +36,9 @@ void DefineACES(MicroAceTime* at)
 	ADDPARAMDEF(PARAM_VALUE, "Layer", "Layer name or number to build the dungeon on.", "1");
 	ADDACT("Build to layer", "Generation", "Build to layer %0", &ExtObject::aBuildToLayout, "BuildToLayer", 0);
 
-	ADDPARAM(PARAM_VALUE, "Tile type", "Tile type (0 = empty, 1 = wall, 2 = door)");
+	ADDPARAMCOMBO("Tile", "Dungeon tile.", "Rock|Tunnel|Room|Wall|Door");
 	ADDPARAM(PARAM_OBJECT, "Object", "Object to represent the tile");
-	ADDACT("Set object mapping", "Generation", "Use %1 with tile type %0", &ExtObject::aSetObjectMapping, "SetObjectMapping", 0); 
+	ADDACT("Set object mapping", "Generation", "Use %1 as %0", &ExtObject::aSetObjectMapping, "SetObjectMapping", 0); 
 	//begin parameter actions
 	ADDPARAM(PARAM_VALUE, "Seed", "Seed to base randomization on.");
 	ADDACT("Set seed", "Parameters", "Set seed to %0", &ExtObject::aSetSeed, "SetSeed", 0);

@@ -15,12 +15,15 @@ void ExtObject::drawDoor(const int x, const int y, const int doorType,
 						 const int horiz, CRunLayer* layer)
 {
 	CRunObject* obj = 0;
+	CRunObjType* objtype = 0;
 	if(doorType == JBDungeonWall::c_WALL)
-		obj = pRuntime->CreateObject(objtypes[3], layer->number, pLayout);
+		objtype = objtypes[3];
 	else if(doorType == JBDungeonWall::c_DOOR)
-		obj = pRuntime->CreateObject(objtypes[5], layer->number, pLayout);
+		objtype = objtypes[4];
 	else
 		return;
+	if(objtype == 0) return;
+	obj = pRuntime->CreateObject(objtype, layer->number, pLayout);
 
 	obj->info.w = options.thinWallWidth;
 	obj->info.h = options.tileSize;
@@ -50,16 +53,21 @@ long ExtObject::aBuildToLayout(LPVAL params)
 	for(unsigned int y = 0; y < dungeon->getY(); ++y) {
 		for(unsigned int x = 0; x < dungeon->getX(); ++x) {
 			int tile = dungeon->getDungeonAt(x, y, 0);
-			//if(tile == JBDungeon::c_WALL) {
-				objtype = objtypes[tile];
-				if(objtype == 0) continue;
-				CRunObject* obj = pRuntime->CreateObject(objtype, layer->number, layout);
-				obj->info.x = x * options.tileSize;
-				obj->info.y = y * options.tileSize;
-				obj->info.w = options.tileSize;
-				obj->info.h = options.tileSize;
-				obj->UpdateBoundingBox();
-			//}
+			if(tile == JBDungeon::c_WALL)
+				objtype = objtypes[0];
+			else if(tile == JBDungeon::c_PASSAGE)
+				objtype = objtypes[1];
+			else if(tile == JBDungeon::c_ROOM)
+				objtype = objtypes[2];
+			else
+				continue;
+			if(objtype == 0) continue;
+			CRunObject* obj = pRuntime->CreateObject(objtype, layer->number, layout);
+			obj->info.x = x * options.tileSize;
+			obj->info.y = y * options.tileSize;
+			obj->info.w = options.tileSize;
+			obj->info.h = options.tileSize;
+			obj->UpdateBoundingBox();
 		}
 	}
 
@@ -174,14 +182,17 @@ long ExtObject::aSetEnd(LPVAL params)
 //static const int c_PASSAGE;  /* point is in a passage */
 //static const int c_ROOM;     /* point is in a room */
 //Walls are separate types:
-/*
-const int JBDungeonWall::c_NONE = 0;
-const int JBDungeonWall::c_WALL = 1;
-const int JBDungeonWall::c_DOOR = 2;
-const int JBDungeonWall::c_SECRETDOOR = 3;
-const int JBDungeonWall::c_CONCEALEDDOOR = 4;
-*/
-
+//const int JBDungeonWall::c_NONE = 0;
+//const int JBDungeonWall::c_WALL = 1;
+//const int JBDungeonWall::c_DOOR = 2;
+//const int JBDungeonWall::c_SECRETDOOR = 3;
+//const int JBDungeonWall::c_CONCEALEDDOOR = 4;
+//However we have only these:
+//0 = rock
+//1 = tunnel
+//2 = room
+//3 = wall
+//4 = door
 long ExtObject::aSetObjectMapping(LPVAL params)
 {
 	CRunObjType* objtype = params[1].GetObjectParam(pRuntime);

@@ -18,6 +18,9 @@ ExtObject::ExtObject(initialObject* editObject, VRuntime* pVRuntime)
 	pRuntime = pVRuntime;
 	info.editObject = editObject;
 	dungeon = 0;
+	for(unsigned i = 0; i < 6; ++i) {
+		objtypes[i] = 0;
+	}
 }
 
 // This is called just after the constructor when your object has been created.  Construct has set
