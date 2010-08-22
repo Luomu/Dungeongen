@@ -88,6 +88,7 @@ public:
 	long aSetRoomDimensions(LPVAL params);
 	long aSetStart(LPVAL params);
 	long aSetEnd(LPVAL params);
+	long aSetThinWallWidth(LPVAL params);
 
 	//param getters
 	long eSeed(LPVAL params, ExpReturn& ret) { return ret = options.seed; }
@@ -99,6 +100,7 @@ public:
 	long eMaxRoomCount(LPVAL params, ExpReturn& ret) { return ret = options.maxRoomCount; }
 	long eMinRoomCount(LPVAL params, ExpReturn& ret) { return ret = options.minRoomCount; }
 	long eDeadEnds(LPVAL params, ExpReturn& ret) { return ret = options.clearDeadends; }
+	long eThinWallWidth(LPVAL params, ExpReturn& ret) { return ret = options.thinWallWidth; }
 
 	////////////////////////////////////////////////////
 	// Data members

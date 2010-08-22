@@ -5,10 +5,11 @@
 class Options : public JBDungeonOptions {
 public:
 	Options() : JBDungeonOptions(),
-		tileSize(32)
+		tileSize(32),
+		thinWallWidth(8)
 	{
-		secretDoors = 3;
-		concealedDoors = 3;
+		secretDoors = 0;
+		concealedDoors = 0;
 		minRoomX = 2;
 		maxRoomX = 3;
 		minRoomY = 2;
@@ -16,6 +17,7 @@ public:
 	}
 
 	int tileSize;
+	int thinWallWidth;
 };
 
 #endif

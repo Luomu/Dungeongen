@@ -18,20 +18,20 @@ void ExtObject::drawDoor(const int x, const int y, const int doorType,
 	if(doorType == JBDungeonWall::c_WALL)
 		obj = pRuntime->CreateObject(objtypes[3], layer->number, pLayout);
 	else if(doorType == JBDungeonWall::c_DOOR)
-		return; //obj = pRuntime->CreateObject(objtypes[5], layer->number, pLayout);
+		obj = pRuntime->CreateObject(objtypes[5], layer->number, pLayout);
 	else
 		return;
 
+	obj->info.w = options.thinWallWidth;
+	obj->info.h = options.tileSize;
+
 	if(horiz) {
-		obj->info.x = x * options.tileSize;
-		obj->info.y = y * options.tileSize + options.tileSize - 2;
-		obj->info.w = options.tileSize;
-		obj->info.h = 4;
+		obj->info.x = x * options.tileSize + options.tileSize;
+		obj->info.y = y * options.tileSize + options.tileSize - options.thinWallWidth/2;
+		obj->info.angle = 90;
 	} else {
-		obj->info.x = x * options.tileSize + options.tileSize - 2;
+		obj->info.x = x * options.tileSize + options.tileSize - options.thinWallWidth/2;;
 		obj->info.y = y * options.tileSize;
-		obj->info.w = 4;
-		obj->info.h = options.tileSize;
 	}
 	obj->UpdateBoundingBox();
 }
@@ -62,7 +62,8 @@ long ExtObject::aBuildToLayout(LPVAL params)
 			//}
 		}
 	}
-	return 0;
+
+	if(options.thinWallWidth == 0) return 0;
 
 	//walls, doors
 	int wall = 0;
@@ -71,18 +72,19 @@ long ExtObject::aBuildToLayout(LPVAL params)
 			JBMazePt p1(x, y, 0);
 			JBMazePt p2(x, y+1, 0);
 			JBMazePt p3(x+1, y, 0);
+			/*if(dungeon->getDungeonAt(p1) == JBDungeon::c_WALL ||
+				dungeon->getDungeonAt(p2) == JBDungeon::c_WALL ||
+				dungeon->getDungeonAt(p3) == JBDungeon::c_WALL)
+			{
+				continue;
+			}*/
+			int dir = -1; // 0-1-2-3 == N-E-S-W
 			wall = dungeon->getWallBetween(p1, p2); //south wall
-			if(wall != JBDungeonWall::c_NONE) {
+			if(wall != JBDungeonWall::c_NONE)
 				drawDoor(x, y, wall, 1, layer);
-					/*CRunObject* obj = pRuntime->CreateObject(objtypes[3], layer->number, layout);
-					obj->info.x = x * options.tileSize;
-					obj->info.y = y * options.tileSize;
-					obj->UpdateBoundingBox();*/
-			}
 			wall = dungeon->getWallBetween(p1, p3); // east wall
-			if(wall != JBDungeonWall::c_NONE) {
+			if(wall != JBDungeonWall::c_NONE)
 				drawDoor(x, y, wall, 0, layer);
-			}
 		}
 	}
 	return 0;
@@ -186,5 +188,12 @@ long ExtObject::aSetObjectMapping(LPVAL params)
 	if(objtype == 0)
 		return 0;
 	objtypes[params[0].GetInt()] = objtype;
+	return 0;
+}
+
+long ExtObject::aSetThinWallWidth(LPVAL params)
+{
+	options.thinWallWidth = params[0].GetInt();
+	Clamp(options.thinWallWidth, 0, 128);
 	return 0;
 }

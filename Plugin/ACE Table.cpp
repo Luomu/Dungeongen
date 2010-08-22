@@ -85,6 +85,11 @@ void DefineACES(MicroAceTime* at)
 	ADDACT("Set end", "Mazes",
 		"Set end point at (%0, %1)",
 		&ExtObject::aSetEnd, "SetEnd", 0);
+
+	ADDPARAM(PARAM_VALUE, "Width", "Wall width in pixels (disabled when zero)");
+	ADDACT("Set thin wall width", "Parameters",
+		"Set thin wall width to %0 px",
+		&ExtObject::aSetThinWallWidth, "SetThinWallWidth", 0);
 	//end parameter actions
 
 	/////////////////////////////
@@ -100,6 +105,7 @@ void DefineACES(MicroAceTime* at)
 	ADDEXP("Maximum room count", "Parameters", "MaxRoomCount", &ExtObject::eMaxRoomCount, RETURN_INTEGER);
 	ADDEXP("Minimum room count", "Parameters", "MinRoomCount", &ExtObject::eMinRoomCount, RETURN_INTEGER);
 	ADDEXP("Dead end removal amount", "Parameters", "DeadEndRemovalAmount", &ExtObject::eDeadEnds, RETURN_INTEGER);
+	ADDEXP("Thin wall width", "Parameters", "ThinWallWidth", &ExtObject::eThinWallWidth, RETURN_INTEGER);
 	// This line includes your common ACEs as specified in Main.h
 #include "..\Common\CommonAceTable.hpp"
 }

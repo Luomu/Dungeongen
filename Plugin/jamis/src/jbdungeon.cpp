@@ -257,6 +257,9 @@ JBDungeonRoom* JBDungeon::getRoom( int idx ) {
   return room;
 }
 
+int JBDungeon::getDungeonAt( const JBMazePt& pt ) {
+	return getDungeonAt( pt.x, pt.y, pt.z );
+}
 
 int JBDungeon::getDungeonAt( int x, int y, int z ) {
   if( ( x < 0 ) || ( y < 0 ) || ( z < 0 ) ) {

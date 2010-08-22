@@ -211,6 +211,8 @@ class JBDungeon {
      * ----------------------------------------------------------------- */
     int getDungeonAt( int x, int y, int z );
 
+	int getDungeonAt( const JBMazePt& pt );
+
     /* ----------------------------------------------------------------- *
      * int getSolutionLength()
      *
