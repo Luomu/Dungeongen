@@ -43,8 +43,8 @@ void DefineACES(MicroAceTime* at)
 	ADDPARAM(PARAM_VALUE, "Seed", "Seed to base randomization on.");
 	ADDACT("Set seed", "Parameters", "Set seed to %0", &ExtObject::aSetSeed, "SetSeed", 0);
 
-	ADDPARAM(PARAM_VALUE, "Width", "Dungeon width (tiles).");
-	ADDPARAM(PARAM_VALUE, "Height", "Dungeon height (tiles).");
+	ADDPARAM(PARAM_VALUE, "Width", "Dungeon width. Actual width is x * 2 + 1 to accomodate for walls.");
+	ADDPARAM(PARAM_VALUE, "Height", "Dungeon height. Actual height is y * 2 + 1 to accomodate for walls.");
 	ADDACT("Set size", "Parameters", "Set size to %0 by %1", &ExtObject::aSetSize, "SetSize", 0);
 
 	ADDPARAM(PARAM_VALUE, "Randomness", "Randomness 0-100%");
