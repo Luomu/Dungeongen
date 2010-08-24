@@ -110,6 +110,12 @@ void DefineACES(MicroAceTime* at)
 	ADDPARAM(PARAM_VALUE, "X", "X coordinate (column) of the tile.");
 	ADDPARAM(PARAM_VALUE, "Y", "Y coordinate (row) of the tile.");
 	ADDEXP("Get tile at", "Dungeon data", "GetTileAt", &ExtObject::eGetTileAt, RETURN_INTEGER);
+
+	ADDPARAM(PARAM_VALUE, "X1", "X coordinate (column) of the tile 1.");
+	ADDPARAM(PARAM_VALUE, "Y1", "Y coordinate (row) of the tile 1.");
+	ADDPARAM(PARAM_VALUE, "X2", "X coordinate (column) of the tile 2.");
+	ADDPARAM(PARAM_VALUE, "Y2", "Y coordinate (row) of the tile 2.");
+	ADDEXP("Get wall between points", "Dungeon data", "GetWallBetween", &ExtObject::eGetTileAt, RETURN_INTEGER);
 	// This line includes your common ACEs as specified in Main.h
 #include "..\Common\CommonAceTable.hpp"
 }

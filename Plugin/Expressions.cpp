@@ -33,3 +33,18 @@ long ExtObject::eGetTileAt(LPVAL params, ExpReturn &ret)
 		retval = dungeon->getDungeonAt(x, y, 0);
 	return ret = retval;
 }
+
+long ExtObject::eGetWallBetweenPoints(LPVAL params, ExpReturn &ret)
+{
+	if(dungeon == 0) return ret = 0;
+	JBMazePt p1(params[0].GetInt(), params[1].GetInt(), 0);
+	JBMazePt p2(params[2].GetInt(), params[3].GetInt(), 0);
+	int retval = dungeon->getWallBetween(p1, p2);
+	if(retval == JBDungeonWall::c_WALL)
+		retval = 3;
+	else if(retval == JBDungeonWall::c_DOOR)
+		retval = 4;
+	else
+		retval = 0;
+	return ret = retval;
+}

@@ -104,12 +104,20 @@ public:
 
 	//non-param expressions
 	long eGetTileAt(LPVAL params, ExpReturn& ret);
+	long eGetWallBetweenPoints(LPVAL params, ExpReturn& ret);
 
 	////////////////////////////////////////////////////
 	// Data members
 
 	// Use when private variables (OF_PRIVATEVARIABLES) are enabled.
 private:
+	enum TileTypes {
+		tile_NONE = 0,
+		tile_ROCK,
+		tile_PASSAGE,
+		tile_ROOM,
+		tile_DOOR
+	};
 	JBDungeon* dungeon;
 	Options options;
 	std::map<int, CRunObjType*> objtypes;
