@@ -312,9 +312,19 @@ class JBDungeon {
      * ----------------------------------------------------------------- */
     void m_addWall( const JBMazePt& p1, const JBMazePt& p2, int type );
 
+    /* ----------------------------------------------------------------- *
+     * void expand()
+     *
+     * Enlarges your dungeon
+	 * Removes thin walls, doors and room data
+	 * Modifies internal dimensions
+     * ----------------------------------------------------------------- */
+	void expand();
+
   private:
 
     int***    m_dungeon;         /* the three dimensional array of dungeon points */
+	int**     m_expanded;        /* expanded dungeon without the third dimension */
 
     JBMazePt* m_solution;        /* the list of points in the solution of the maze */
     int       m_solutionLength;  /* the number of steps in the solution */
@@ -329,6 +339,8 @@ class JBDungeon {
     JBMazeMask*    m_mask;       /* the mask to use for creating the dungeon */
 
     char*    m_dataPath;         /* the path that the generator looks in to find data */
+
+	bool m_expanded;             /* true if dungeon has been expanded */
 };
 
 #endif /* __JBDUNGEON_H__ */

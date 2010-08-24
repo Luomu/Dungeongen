@@ -113,6 +113,7 @@ JBDungeon::JBDungeon( JBDungeonOptions& options ) {
   m_rooms   = 0;
   m_walls   = 0;
   m_dataPath = 0;
+  m_expanded = false;
 
   m_x = m_y = m_z = 0;
 
@@ -258,7 +259,7 @@ JBDungeonRoom* JBDungeon::getRoom( int idx ) {
 }
 
 int JBDungeon::getDungeonAt( const JBMazePt& pt ) {
-	return getDungeonAt( pt.x, pt.y, pt.z );
+    return getDungeonAt[ pt.x ][ pt.y ][ pt.z ];
 }
 
 int JBDungeon::getDungeonAt( int x, int y, int z ) {
@@ -269,7 +270,10 @@ int JBDungeon::getDungeonAt( int x, int y, int z ) {
     return 0;
   }
 
-  return m_dungeon[ x ][ y ][ z ];
+  if(expanded)
+    return m_expanded[ x ][ y ];
+  else
+    return m_dungeon[ x ][ y ][ z ];
 }
 
 
@@ -685,4 +689,26 @@ void JBDungeon::setDataPath( const char* path ) {
 
   m_dataPath = new char[ strlen( path ) + 1 ];
   strcpy( m_dataPath, path );
+}
+
+void JBDungeon::expand()
+{
+	int w = m_x * 2 + 1;
+	int h = m_y * 2 + 1;
+
+	unsigned x;
+	unsigned y;
+
+	m_expanded = (int**)malloc( w * sizeof( int* ) );
+	for(x = 0; x < w; ++x)
+		m_expanded[i] = (int *)malloc(h * sizeof(int));
+
+	//fill the array with rock
+	for(x = 0; x < w; ++x)
+		for(y = 0; y < h; ++y)
+			m_expanded[x][y] = JBDungeon::c_WALL;
+
+	m_x = w;
+	m_y = h;
+	m_expanded = true;
 }
