@@ -263,6 +263,15 @@ class JBDungeon {
      * ----------------------------------------------------------------- */
     char* getDataPath() { return m_dataPath; }
 
+     /* ----------------------------------------------------------------- *
+     * void expand()
+     *
+     * Enlarges your dungeon
+	 * Removes thin walls, doors and room data
+	 * Modifies internal dimensions
+     * ----------------------------------------------------------------- */
+     void expand();
+
   private:
 
     /* ----------------------------------------------------------------- *
@@ -311,15 +320,6 @@ class JBDungeon {
      * or vertically adjacent points.
      * ----------------------------------------------------------------- */
     void m_addWall( const JBMazePt& p1, const JBMazePt& p2, int type );
-
-    /* ----------------------------------------------------------------- *
-     * void expand()
-     *
-     * Enlarges your dungeon
-	 * Removes thin walls, doors and room data
-	 * Modifies internal dimensions
-     * ----------------------------------------------------------------- */
-	void expand();
 
   private:
 

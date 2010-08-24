@@ -8,6 +8,7 @@
 long ExtObject::aGenerate(LPVAL params)
 {
 	dungeon = new JBDungeon(options);
+	dungeon->expand();
 	return 0;
 }
 
