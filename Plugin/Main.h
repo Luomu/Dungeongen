@@ -92,8 +92,8 @@ public:
 
 	//param getters
 	long eSeed(LPVAL params, ExpReturn& ret) { return ret = options.seed; }
-	long eWidth(LPVAL params, ExpReturn& ret) { return ret = options.size.x * 2; }
-	long eHeight(LPVAL params, ExpReturn& ret) { return ret = options.size.y * 2; }
+	long eWidth(LPVAL params, ExpReturn& ret) { if(dungeon) return ret = dungeon->getX(); else return ret = options.size.x * 4 + 3; }
+	long eHeight(LPVAL params, ExpReturn& ret) { if(dungeon) return ret = dungeon->getY(); else return ret = options.size.y * 4 + 3; }
 	long eRandomness(LPVAL params, ExpReturn& ret) { return ret = options.randomness; }
 	long eSparseness(LPVAL params, ExpReturn& ret) { return ret = options.sparseness; }
 	long eTileSize(LPVAL params, ExpReturn& ret) { return ret = options.tileSize; }

@@ -187,14 +187,24 @@ class JBDungeon {
      *
      * Retrieve the x-dimension of the dungeon
      * ----------------------------------------------------------------- */
-    int getX() { if( m_exp_x ) return m_exp_x; return m_x; }
+    int getX() {
+      if( m_exp_x > 0) 
+        return m_exp_x;
+      else
+        return m_x;
+    }
 
     /* ----------------------------------------------------------------- *
      * int getY()
      *
      * Retrieve the y-dimension of the dungeon
      * ----------------------------------------------------------------- */
-    int getY() { if( m_exp_x ) return m_exp_y; else return m_y; }
+    int getY() {
+      if( m_exp_y > 0)
+        return m_exp_y;
+      else
+        return m_y;
+    }
 
     /* ----------------------------------------------------------------- *
      * int getZ()

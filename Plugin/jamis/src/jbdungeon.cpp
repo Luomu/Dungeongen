@@ -274,14 +274,17 @@ int JBDungeon::getDungeonAt( int x, int y, int z ) {
   if( ( x < 0 ) || ( y < 0 ) || ( z < 0 ) ) {
     return 0;
   }
-  if( ( x >= m_x ) || ( y >= m_y ) || ( z >= m_z ) ) {
-    return 0;
-  }
 
-  if(m_isExpanded)
+  if( m_exp_x > 0 ) {
+    if( ( x >= m_exp_x ) || ( y >= m_exp_y ) )
+      return 0;
     return m_expanded[ x ][ y ];
-  else
+  }
+  else {
+    if( ( x >= m_x ) || ( y >= m_y ) || ( z >= m_z ) )
+      return 0;
     return m_dungeon[ x ][ y ][ z ];
+  }
 }
 
 
@@ -721,6 +724,13 @@ void JBDungeon::expand()
     for( y = 0; y < m_y - 1; ++y) {
       if( m_dungeon[ x ][ y ][ 0 ] == c_PASSAGE) {
         m_expanded[ x * 2 + 1 ][y * 2 + 1] = c_PASSAGE;
+        JBMazePt p1( x, y, 0 );
+        JBMazePt p2( x + 1, y, 0 );
+        JBMazePt p3( x, y + 1, 0 );
+        if( getWallBetween( p1, p2 ) == JBDungeonWall::c_NONE)
+          m_expanded[ x * 2 + 2 ][y * 2 + 1] = c_PASSAGE;
+        if( getWallBetween( p1, p3 ) == JBDungeonWall::c_NONE)
+          m_expanded[ x * 2 + 1 ][y * 2 + 2] = c_PASSAGE;
       }
     }
   }

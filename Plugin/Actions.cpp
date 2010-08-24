@@ -7,6 +7,10 @@
 //Generate the dungeon. Opts have been set previously.
 long ExtObject::aGenerate(LPVAL params)
 {
+  if(dungeon != 0) {
+    delete dungeon;
+    dungeon = 0;
+  }
 	dungeon = new JBDungeon(options);
 	dungeon->expand();
 	return 0;
@@ -51,8 +55,8 @@ long ExtObject::aBuildToLayout(LPVAL params)
 		return 0;
 
 	//maze should be generated at this point!
-	for(unsigned int y = 0; y < dungeon->getY(); ++y) {
-		for(unsigned int x = 0; x < dungeon->getX(); ++x) {
+	for(int y = 0; y < dungeon->getY(); ++y) {
+		for(int x = 0; x < dungeon->getX(); ++x) {
 			int tile = dungeon->getDungeonAt(x, y, 0);
 			if(tile == JBDungeon::c_WALL)
 				objtype = objtypes[0];
