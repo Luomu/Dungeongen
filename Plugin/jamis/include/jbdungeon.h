@@ -187,14 +187,14 @@ class JBDungeon {
      *
      * Retrieve the x-dimension of the dungeon
      * ----------------------------------------------------------------- */
-    int getX() { return m_x; }
+    int getX() { if( m_exp_x ) return m_exp_x; return m_x; }
 
     /* ----------------------------------------------------------------- *
      * int getY()
      *
      * Retrieve the y-dimension of the dungeon
      * ----------------------------------------------------------------- */
-    int getY() { return m_y; }
+    int getY() { if( m_exp_x ) return m_exp_y; else return m_y; }
 
     /* ----------------------------------------------------------------- *
      * int getZ()
@@ -324,7 +324,7 @@ class JBDungeon {
   private:
 
     int***    m_dungeon;         /* the three dimensional array of dungeon points */
-	int**     m_expanded;        /* expanded dungeon without the third dimension */
+    int**     m_expanded;        /* expanded dungeon without the third dimension */
 
     JBMazePt* m_solution;        /* the list of points in the solution of the maze */
     int       m_solutionLength;  /* the number of steps in the solution */
@@ -340,7 +340,9 @@ class JBDungeon {
 
     char*    m_dataPath;         /* the path that the generator looks in to find data */
 
-	bool m_expanded;             /* true if dungeon has been expanded */
+    bool m_isExpanded;           /* true if dungeon has been expanded */
+    int m_exp_x;                 /* expanded x-dimension */
+    int m_exp_y;                 /* expanded y-dimension */
 };
 
 #endif /* __JBDUNGEON_H__ */

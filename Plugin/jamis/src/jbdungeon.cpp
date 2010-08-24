@@ -113,7 +113,8 @@ JBDungeon::JBDungeon( JBDungeonOptions& options ) {
   m_rooms   = 0;
   m_walls   = 0;
   m_dataPath = 0;
-  m_expanded = false;
+  m_isExpanded = false;
+  m_exp_x = m_exp_y = 0;
 
   m_x = m_y = m_z = 0;
 
@@ -154,6 +155,13 @@ JBDungeon::~JBDungeon() {
 
   delete m_mask;
   delete m_dataPath;
+
+  if( m_exp_x ) {
+    for( x = 0; x < m_exp_x; x++ ) {
+      free( m_expanded[x] );
+    }
+    free( m_expanded );
+  }
 }
 
 
@@ -259,7 +267,7 @@ JBDungeonRoom* JBDungeon::getRoom( int idx ) {
 }
 
 int JBDungeon::getDungeonAt( const JBMazePt& pt ) {
-    return getDungeonAt[ pt.x ][ pt.y ][ pt.z ];
+    return getDungeonAt( pt.x, pt.y, pt.z );
 }
 
 int JBDungeon::getDungeonAt( int x, int y, int z ) {
@@ -270,7 +278,7 @@ int JBDungeon::getDungeonAt( int x, int y, int z ) {
     return 0;
   }
 
-  if(expanded)
+  if(m_isExpanded)
     return m_expanded[ x ][ y ];
   else
     return m_dungeon[ x ][ y ][ z ];
@@ -693,22 +701,31 @@ void JBDungeon::setDataPath( const char* path ) {
 
 void JBDungeon::expand()
 {
-	int w = m_x * 2 + 1;
-	int h = m_y * 2 + 1;
+  int w = m_x * 2 + 1;
+  int h = m_y * 2 + 1;
 
-	unsigned x;
-	unsigned y;
+  int x;
+  int y;
 
-	m_expanded = (int**)malloc( w * sizeof( int* ) );
-	for(x = 0; x < w; ++x)
-		m_expanded[i] = (int *)malloc(h * sizeof(int));
+  m_expanded = (int**)malloc( w * sizeof( int* ) );
+  for(x = 0; x < w; ++x)
+    m_expanded[x] = (int *)malloc(h * sizeof(int));
 
-	//fill the array with rock
-	for(x = 0; x < w; ++x)
-		for(y = 0; y < h; ++y)
-			m_expanded[x][y] = JBDungeon::c_WALL;
+  //fill the array with rock
+  for(x = 0; x < w; ++x)
+    for(y = 0; y < h; ++y)
+      m_expanded[x][y] = JBDungeon::c_WALL;
 
-	m_x = w;
-	m_y = h;
-	m_expanded = true;
+  //recreate some passages
+  for( x = 0; x < m_x - 1; ++x) {
+    for( y = 0; y < m_y - 1; ++y) {
+      if( m_dungeon[ x ][ y ][ 0 ] == c_PASSAGE) {
+        m_expanded[ x * 2 + 1 ][y * 2 + 1] = c_PASSAGE;
+      }
+    }
+  }
+
+  m_exp_x = w;
+  m_exp_y = h;
+  m_isExpanded = true;
 }

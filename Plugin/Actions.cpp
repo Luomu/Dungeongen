@@ -71,6 +71,7 @@ long ExtObject::aBuildToLayout(LPVAL params)
 			obj->UpdateBoundingBox();
 		}
 	}
+	return 0;
 
 	if(options.thinWallWidth == 0) return 0;
 
