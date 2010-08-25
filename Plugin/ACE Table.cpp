@@ -92,6 +92,10 @@ void DefineACES(MicroAceTime* at)
 		&ExtObject::aSetThinWallWidth, "SetThinWallWidth", 0);
 	//end parameter actions
 
+	ADDPARAMDEF(PARAM_VALUE, "Layer", "Layer name or number to build the dungeon on.", "1");
+	ADDACT("Build to layer (expanded)", "Generation", "Build expanded to layer %0",
+		&ExtObject::aBuildToLayoutExpanded, "BuildToLayerExpanded", 0);
+
 	/////////////////////////////
 	// Expressions
 	// ADDEXP(List name, Category, Display string, Function address, Flags)

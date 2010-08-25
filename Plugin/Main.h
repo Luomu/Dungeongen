@@ -77,6 +77,7 @@ public:
 	long aGenerate(LPVAL params);
 	long aBuildToLayout(LPVAL params);
 	long aSetObjectMapping(LPVAL params);
+  long aBuildToLayoutExpanded(LPVAL params);
 	//param setters
 	long aSetSeed(LPVAL params);
 	long aSetSize(LPVAL params);
@@ -112,8 +113,7 @@ public:
 	// Use when private variables (OF_PRIVATEVARIABLES) are enabled.
 private:
 	enum TileTypes {
-		tile_NONE = 0,
-		tile_ROCK,
+		tile_ROCK = 0,
 		tile_PASSAGE,
 		tile_ROOM,
 		tile_DOOR

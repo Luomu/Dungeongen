@@ -12,7 +12,6 @@ long ExtObject::aGenerate(LPVAL params)
     dungeon = 0;
   }
 	dungeon = new JBDungeon(options);
-	dungeon->expand();
 	return 0;
 }
 
@@ -42,6 +41,44 @@ void ExtObject::drawDoor(const int x, const int y, const int doorType,
 		obj->info.y = y * options.tileSize;
 	}
 	obj->UpdateBoundingBox();
+}
+
+//this version builds a 2*1 tiles version of the dungeon to get rid
+//of this walls and between-tiles door placement
+long ExtObject::aBuildToLayoutExpanded(LPVAL params)
+{
+	CRunLayer* layer = params[0].GetLayerParam(pRuntime, pLayout);
+	CRunObjType* objtype = 0;
+	if(layer == 0)
+		return 0;
+
+	for(int y = 0; y < dungeon->getY(); ++y) {
+		for(int x = 0; x < dungeon->getX(); ++x) {
+			int tile = dungeon->getDungeonAt(x, y, 0);
+			if(tile == JBDungeon::c_WALL)
+				objtype = objtypes[tile_ROCK];
+			else if(tile == JBDungeon::c_PASSAGE)
+				objtype = objtypes[tile_PASSAGE];
+			else
+				objtype = 0;
+			if(objtype == 0) continue;
+			CRunObject* obj = pRuntime->CreateObject(objtype, layer->number, pLayout);
+			obj->info.x = (x * 2 + 1) * options.tileSize;
+			obj->info.y = (y * 2 + 1) * options.tileSize;
+			obj->info.w = options.tileSize;
+			obj->info.h = options.tileSize;
+			obj->UpdateBoundingBox();
+			if(tile == JBDungeon::c_WALL) {
+				CRunObject* obj = pRuntime->CreateObject(objtype, layer->number, pLayout);
+				obj->info.x = (x * 2 + 2) * options.tileSize;
+				obj->info.y = (y * 2 + 2) * options.tileSize;
+				obj->info.w = options.tileSize;
+				obj->info.h = options.tileSize;
+				obj->UpdateBoundingBox();
+			}
+		}
+	}
+	return 0;
 }
 
 //after the maze has been generated, create it on the layout using
