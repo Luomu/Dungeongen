@@ -43,6 +43,17 @@ void ExtObject::drawDoor(const int x, const int y, const int doorType,
 	obj->UpdateBoundingBox();
 }
 
+void ExtObject::placeTile(CRunObjType* objtype, int tileX, int tileY, CRunLayer* layer)
+{
+	if(objtype == 0) return;
+	CRunObject* obj = pRuntime->CreateObject(objtype, layer->number, pLayout);
+	obj->info.x = tileX * options.tileSize;
+	obj->info.y = tileY * options.tileSize;
+	obj->info.w = options.tileSize;
+	obj->info.h = options.tileSize;
+	obj->UpdateBoundingBox();
+}
+
 //this version builds a 2*1 tiles version of the dungeon to get rid
 //of this walls and between-tiles door placement
 long ExtObject::aBuildToLayoutExpanded(LPVAL params)
@@ -55,26 +66,35 @@ long ExtObject::aBuildToLayoutExpanded(LPVAL params)
 	for(int y = 0; y < dungeon->getY(); ++y) {
 		for(int x = 0; x < dungeon->getX(); ++x) {
 			int tile = dungeon->getDungeonAt(x, y, 0);
-			if(tile == JBDungeon::c_WALL)
-				objtype = objtypes[tile_ROCK];
-			else if(tile == JBDungeon::c_PASSAGE)
-				objtype = objtypes[tile_PASSAGE];
-			else
-				objtype = 0;
-			if(objtype == 0) continue;
-			CRunObject* obj = pRuntime->CreateObject(objtype, layer->number, pLayout);
-			obj->info.x = (x * 2 + 1) * options.tileSize;
-			obj->info.y = (y * 2 + 1) * options.tileSize;
-			obj->info.w = options.tileSize;
-			obj->info.h = options.tileSize;
-			obj->UpdateBoundingBox();
 			if(tile == JBDungeon::c_WALL) {
-				CRunObject* obj = pRuntime->CreateObject(objtype, layer->number, pLayout);
-				obj->info.x = (x * 2 + 2) * options.tileSize;
-				obj->info.y = (y * 2 + 2) * options.tileSize;
-				obj->info.w = options.tileSize;
-				obj->info.h = options.tileSize;
-				obj->UpdateBoundingBox();
+				objtype = objtypes[tile_ROCK];
+				placeTile(objtype, x * 2 + 1, y * 2 + 1, layer);
+				placeTile(objtype, x * 2 + 2, y * 2 + 1, layer);
+				placeTile(objtype, x * 2 + 1, y * 2 + 2, layer);
+				placeTile(objtype, x * 2 + 2, y * 2 + 2, layer);
+			} else if(tile == JBDungeon::c_PASSAGE) {
+				objtype = objtypes[tile_PASSAGE];
+				placeTile(objtype, x * 2 + 1, y * 2 + 1, layer);
+				JBMazePt p1(x, y, 0);
+				JBMazePt p2(x + 1, y, 0); //east
+				JBMazePt p3(x, y + 1, 0); //south
+				if(dungeon->getWallBetween(p1, p2) == JBDungeonWall::c_NONE)
+					placeTile(objtype, x * 2 + 2, y * 2 + 1, layer);
+				/*if(dungeon->getWallBetween(p1, p2) == JBDungeonWall::c_WALL) {
+					placeTile(objtypes[tile_ROCK], x * 2 + 2, y * 2 + 1, layer);
+					placeTile(objtypes[tile_ROCK], x * 2 + 2, y * 2 + 2, layer);
+				}
+				if(dungeon->getWallBetween(p1, p3) == JBDungeonWall::c_NONE)
+					placeTile(objtype, x * 2 + 1, y * 2 + 2, layer);
+				if(dungeon->getWallBetween(p1, p3) == JBDungeonWall::c_WALL) {
+					placeTile(objtypes[tile_ROCK], x * 2 + 1, y * 2 + 2, layer);
+				}*/
+			}
+			else if(tile == JBDungeon::c_ROOM) {
+				objtype = objtypes[tile_ROOM];
+				placeTile(objtype, x * 2 + 1, y * 2 + 1, layer);
+			} else {
+
 			}
 		}
 	}

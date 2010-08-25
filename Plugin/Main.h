@@ -123,6 +123,7 @@ private:
 	std::map<int, CRunObjType*> objtypes;
 
 	void drawDoor(const int x, const int y, const int doorType, const int horiz, CRunLayer* layer);
+	void placeTile(CRunObjType* obj, int tileX, int tileY, CRunLayer* layer);
 };
 
 //////////// EDITTIME INFO ////////////
