@@ -43,7 +43,8 @@ void ExtObject::drawDoor(const int x, const int y, const int doorType,
 	obj->UpdateBoundingBox();
 }
 
-void ExtObject::placeTile(CRunObjType* objtype, int tileX, int tileY, CRunLayer* layer)
+void ExtObject::placeTile(CRunObjType* objtype, int tileX, int tileY, CRunLayer* layer,
+						  int angle)
 {
 	if(objtype == 0) return;
 	CRunObject* obj = pRuntime->CreateObject(objtype, layer->number, pLayout);
@@ -51,6 +52,12 @@ void ExtObject::placeTile(CRunObjType* objtype, int tileX, int tileY, CRunLayer*
 	obj->info.y = tileY * options.tileSize;
 	obj->info.w = options.tileSize;
 	obj->info.h = options.tileSize;
+	if(angle != -1) {
+		obj->info.x += options.tileSize / 2;
+		obj->info.y += options.tileSize / 2;
+		obj->info.angle = angle;
+		obj->info.w = options.tileSize / 2;
+	}
 	obj->UpdateBoundingBox();
 }
 
@@ -89,58 +96,53 @@ long ExtObject::aBuildToLayoutExpanded(LPVAL params)
 	for(int y = 0; y < dungeon->getY(); ++y) {
 		for(int x = 0; x < dungeon->getX(); ++x) {
 			int tile = dungeon->getDungeonAt(x, y, 0);
-			if(tile == JBDungeon::c_PASSAGE)
+			if(tile == JBDungeon::c_PASSAGE) {
+				//this leaves gaps since the map is expanded
 				tiles[x * 2 + 1][y * 2 + 1] = tile_PASSAGE;
+				JBMazePt center(x, y, 0);
+				JBMazePt north(x, y - 1, 0);
+				JBMazePt east(x + 1, y, 0);
+				JBMazePt west(x - 1, y, 0);
+				JBMazePt south(x, y + 1, 0);
+
+				//fill in the missing corridor pieces and doors
+				//by checking walls
+				int wall = dungeon->getWallBetween(north, center);
+				if(wall == JBDungeonWall::c_NONE)
+					tiles[x * 2 + 1][y * 2] = tile_PASSAGE;
+				if(wall == JBDungeonWall::c_DOOR)
+					tiles[x * 2 + 1][y * 2] = tile_DOOR_HORIZONTAL;
+				wall = dungeon->getWallBetween(center, east);
+				if(wall == JBDungeonWall::c_NONE)
+					tiles[x * 2 + 2][y * 2 + 1] = tile_PASSAGE;
+				if(wall == JBDungeonWall::c_DOOR)
+					tiles[x * 2 + 2][y * 2 + 1] = tile_DOOR;
+				wall = dungeon->getWallBetween(west, center);
+				if(wall == JBDungeonWall::c_DOOR)
+					tiles[x * 2][y * 2 + 1] = tile_DOOR;
+				wall = dungeon->getWallBetween(center, south);
+				if(wall == JBDungeonWall::c_DOOR)
+					tiles[x * 2 + 1][y * 2 + 2] = tile_DOOR_HORIZONTAL;
+			}
 		}
 	}
 
 	//draw to layout
-	for(int y = 0; y < h; ++y)
-		for(int x = 0; x < w; ++x)
-			placeTile(objtypes[tiles[x][y]], x, y, layer);
-
-	return 0;
-
-	for(int y = 0; y < dungeon->getY(); ++y) {
-		for(int x = 0; x < dungeon->getX(); ++x) {
-			int tile = dungeon->getDungeonAt(x, y, 0);
-			if(tile == JBDungeon::c_WALL) {
-				objtype = objtypes[tile_ROCK];
-				placeTile(objtype, x * 2 + 1, y * 2 + 1, layer);
-				placeTile(objtype, x * 2 + 2, y * 2 + 1, layer);
-				placeTile(objtype, x * 2 + 1, y * 2 + 2, layer);
-				placeTile(objtype, x * 2 + 2, y * 2 + 2, layer);
-			} else if(tile == JBDungeon::c_PASSAGE) {
-				objtype = objtypes[tile_PASSAGE];
-				placeTile(objtype, x * 2 + 1, y * 2 + 1, layer);
-				JBMazePt p1(x, y, 0);
-				JBMazePt p2(x + 1, y, 0); //east
-				JBMazePt p3(x, y + 1, 0); //south
-				JBMazePt p4(x - 1, y, 0); //west
-				JBMazePt p5(x, y - 1, 0); //north
-
-				int north = dungeon->getWallBetween(p1, p5);
-				int east = dungeon->getWallBetween(p1, p2);
-				int south = dungeon->getWallBetween(p1, p3);
-				if(east == JBDungeonWall::c_NONE)
-					placeTile(objtypes[tile_PASSAGE], x * 2 + 2, y * 2 + 1, layer);
-				if(east == JBDungeonWall::c_WALL) {
-					placeTile(objtypes[tile_ROCK], x * 2 + 2, y * 2 + 1, layer);
-					placeTile(objtypes[tile_ROCK], x * 2 + 2, y * 2 + 2, layer);
-				}
-				if(south == JBDungeonWall::c_NONE)
-					placeTile(objtypes[tile_PASSAGE], x * 2 + 1, y * 2 + 2, layer);
-				/*if(south == JBDungeonWall::c_WALL) {
-					placeTile(objtypes[tile_ROCK], x * 2 + 1, y * 2 + 2, layer);
-					placeTile(objtypes[tile_ROCK], x * 2 + 2, y * 2 + 2, layer);
-				}*/
-				if(south == JBDungeonWall::c_DOOR)
-					placeTile(objtypes[tile_DOOR], x * 2 + 1, y * 2 + 2, layer);
-			} else {
-
+	for(int y = 0; y < h; ++y) {
+		for(int x = 0; x < w; ++x) {
+			if(tiles[x][y] == tile_DOOR_HORIZONTAL) {
+				placeTile(objtypes[tile_PASSAGE], x, y, layer);
+				placeTile(objtypes[tile_DOOR], x, y, layer, 90);
+			}else if(tiles[x][y] == tile_DOOR) {
+				placeTile(objtypes[tile_PASSAGE], x, y, layer);
+				placeTile(objtypes[tile_DOOR], x, y, layer, 0);
+			}
+			else {
+				placeTile(objtypes[tiles[x][y]], x, y, layer);
 			}
 		}
 	}
+
 	return 0;
 }
 
