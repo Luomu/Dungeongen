@@ -106,6 +106,7 @@ public:
 	//non-param expressions
 	long eGetTileAt(LPVAL params, ExpReturn& ret);
 	long eGetWallBetweenPoints(LPVAL params, ExpReturn& ret);
+	//TODO: Get room bounds
 
 	////////////////////////////////////////////////////
 	// Data members
@@ -116,6 +117,7 @@ private:
 		tile_ROCK = 0,
 		tile_PASSAGE,
 		tile_ROOM,
+		tile_WALL,
 		tile_DOOR
 	};
 	JBDungeon* dungeon;
