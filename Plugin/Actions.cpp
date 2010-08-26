@@ -63,6 +63,15 @@ long ExtObject::aBuildToLayoutExpanded(LPVAL params)
 	if(layer == 0)
 		return 0;
 
+	const int w = dungeon->getX() * 2 + 1;
+	const int h = dungeon->getY() * 2 + 1;
+	vector<vector<int>> tiles(w, vector<int>(h));
+
+	//fill the array with rock
+	for(int i = 0; i < w; ++i)
+		for(int j = 0; j < h; ++j)
+			tiles[i][j] = tile_ROCK;
+
 	//rooms first
 	objtype = objtypes[tile_ROOM];;
 	for(int i = 0; i < dungeon->getRoomCount(); ++i) {
@@ -71,10 +80,20 @@ long ExtObject::aBuildToLayoutExpanded(LPVAL params)
 		JBMazePt bottomright(topleft.x + room->size.x * 2, topleft.y + room->size.y * 2, 0);
 		for(int y = topleft.y; y < bottomright.y - 1; ++y) {
 			for(int x = topleft.x; x < bottomright.x - 1; ++x) {
-				placeTile(objtype, x, y, layer);
+				tiles[x][y] = tile_ROOM;
 			}
 		}
 	}
+
+	//draw to layout
+	for(int y = 0; y < h; ++y) {
+		for(int x = 0; x < w; ++x) {
+			if(tiles[x][y] == tile_ROCK)
+				placeTile(objtypes[tile_ROCK], x, y, layer);
+		}
+	}
+
+	return 0;
 
 	for(int y = 0; y < dungeon->getY(); ++y) {
 		for(int x = 0; x < dungeon->getX(); ++x) {
