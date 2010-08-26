@@ -85,13 +85,19 @@ long ExtObject::aBuildToLayoutExpanded(LPVAL params)
 		}
 	}
 
-	//draw to layout
-	for(int y = 0; y < h; ++y) {
-		for(int x = 0; x < w; ++x) {
-			if(tiles[x][y] == tile_ROCK)
-				placeTile(objtypes[tile_ROCK], x, y, layer);
+	//corridors
+	for(int y = 0; y < dungeon->getY(); ++y) {
+		for(int x = 0; x < dungeon->getX(); ++x) {
+			int tile = dungeon->getDungeonAt(x, y, 0);
+			if(tile == JBDungeon::c_PASSAGE)
+				tiles[x * 2 + 1][y * 2 + 1] = tile_PASSAGE;
 		}
 	}
+
+	//draw to layout
+	for(int y = 0; y < h; ++y)
+		for(int x = 0; x < w; ++x)
+			placeTile(objtypes[tiles[x][y]], x, y, layer);
 
 	return 0;
 
