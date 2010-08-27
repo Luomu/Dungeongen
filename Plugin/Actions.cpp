@@ -15,34 +15,6 @@ long ExtObject::aGenerate(LPVAL params)
 	return 0;
 }
 
-void ExtObject::drawDoor(const int x, const int y, const int doorType,
-						 const int horiz, CRunLayer* layer)
-{
-	CRunObject* obj = 0;
-	CRunObjType* objtype = 0;
-	if(doorType == JBDungeonWall::c_WALL)
-		objtype = objtypes[3];
-	else if(doorType == JBDungeonWall::c_DOOR)
-		objtype = objtypes[4];
-	else
-		return;
-	if(objtype == 0) return;
-	obj = pRuntime->CreateObject(objtype, layer->number, pLayout);
-
-	obj->info.w = options.thinWallWidth;
-	obj->info.h = options.tileSize;
-
-	if(horiz) {
-		obj->info.x = x * options.tileSize + options.tileSize;
-		obj->info.y = y * options.tileSize + options.tileSize - options.thinWallWidth/2;
-		obj->info.angle = 90;
-	} else {
-		obj->info.x = x * options.tileSize + options.tileSize - options.thinWallWidth/2;;
-		obj->info.y = y * options.tileSize;
-	}
-	obj->UpdateBoundingBox();
-}
-
 void ExtObject::placeTile(CRunObjType* objtype, int tileX, int tileY, CRunLayer* layer,
 						  int angle)
 {
@@ -149,13 +121,12 @@ long ExtObject::aBuildToLayoutExpanded(LPVAL params)
 //set construct objects
 long ExtObject::aBuildToLayout(LPVAL params)
 {
+	if(dungeon == 0) return 0;
 	CRunLayout* layout = pLayout;
 	CRunLayer* layer = params[0].GetLayerParam(pRuntime, layout);
 	CRunObjType* objtype = 0;
-	if(layer == 0)
-		return 0;
+	if(layer == 0) return 0;
 
-	//maze should be generated at this point!
 	for(int y = 0; y < dungeon->getY(); ++y) {
 		for(int x = 0; x < dungeon->getX(); ++x) {
 			int tile = dungeon->getDungeonAt(x, y, 0);
@@ -176,30 +147,24 @@ long ExtObject::aBuildToLayout(LPVAL params)
 			obj->UpdateBoundingBox();
 		}
 	}
-	return 0;
 
 	if(options.thinWallWidth == 0) return 0;
 
 	//walls, doors
 	int wall = 0;
-	for(unsigned int y = 0; y < dungeon->getY() - 1; ++y) {
-		for(unsigned int x = 0; x < dungeon->getX() - 1; ++x) {
-			JBMazePt p1(x, y, 0);
-			JBMazePt p2(x, y+1, 0);
-			JBMazePt p3(x+1, y, 0);
-			/*if(dungeon->getDungeonAt(p1) == JBDungeon::c_WALL ||
-				dungeon->getDungeonAt(p2) == JBDungeon::c_WALL ||
-				dungeon->getDungeonAt(p3) == JBDungeon::c_WALL)
-			{
-				continue;
-			}*/
-			int dir = -1; // 0-1-2-3 == N-E-S-W
-			wall = dungeon->getWallBetween(p1, p2); //south wall
-			if(wall != JBDungeonWall::c_NONE)
-				drawDoor(x, y, wall, 1, layer);
-			wall = dungeon->getWallBetween(p1, p3); // east wall
-			if(wall != JBDungeonWall::c_NONE)
-				drawDoor(x, y, wall, 0, layer);
+	for(unsigned int y = 1; y < dungeon->getY() - 1; ++y) {
+		for(unsigned int x = 1; x < dungeon->getX() - 1; ++x) {
+			if(dungeon->getDungeonAt(x, y) == JBDungeon::c_WALL) continue;
+			JBMazePt center(x, y, 0);
+			JBMazePt north(x, y - 1, 0);
+			JBMazePt east(x + 1, y, 0);
+			JBMazePt west(x - 1, y, 0);
+			JBMazePt south(x, y + 1, 0);
+
+			int wall = dungeon->getWallBetween(north, center);
+			if(wall == JBDungeonWall::c_WALL) {
+				placeWall(objtypes[tile_WALL], x, y, layer);
+			}
 		}
 	}
 	return 0;
@@ -214,8 +179,8 @@ long ExtObject::aSetSeed(LPVAL params)
 //set width/height (no depth support yet)
 long ExtObject::aSetSize(LPVAL params)
 {
-	options.size.x = params[0].GetInt();
-	options.size.y = params[1].GetInt();
+	options.size.x = params[0].GetInt() / 2;
+	options.size.y = params[1].GetInt() / 2;
 	return 0;
 }
 
