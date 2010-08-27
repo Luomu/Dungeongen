@@ -48,3 +48,39 @@ long ExtObject::eGetWallBetweenPoints(LPVAL params, ExpReturn &ret)
 		retval = 0;
 	return ret = retval;
 }
+
+long ExtObject::eRoomTopLeftX(LPVAL params, ExpReturn &ret)
+{
+	if(dungeon == 0) return ret = 0;
+	int idx = params[0].GetInt() - 1;
+	if(idx < 0 ||idx > dungeon->getRoomCount() - 1) return ret = 0;
+
+	return ret = dungeon->getRoom(idx)->topLeft.x;
+}
+
+long ExtObject::eRoomTopLeftY(LPVAL params, ExpReturn &ret)
+{
+	if(dungeon == 0) return ret = 0;
+	int idx = params[0].GetInt() - 1;
+	if(idx < 0 ||idx > dungeon->getRoomCount() - 1) return ret = 0;
+
+	return ret = dungeon->getRoom(idx)->topLeft.y;
+}
+
+long ExtObject::eRoomWidth(LPVAL params, ExpReturn &ret)
+{
+	if(dungeon == 0) return ret = 0;
+	int idx = params[0].GetInt() - 1;
+	if(idx < 0 ||idx > dungeon->getRoomCount() - 1) return ret = 0;
+
+	return ret = dungeon->getRoom(idx)->size.x;
+}
+
+long ExtObject::eRoomHeight(LPVAL params, ExpReturn &ret)
+{
+	if(dungeon == 0) return ret = 0;
+	int idx = params[0].GetInt() - 1;
+	if(idx < 0 ||idx > dungeon->getRoomCount() - 1) return ret = 0;
+
+	return ret = dungeon->getRoom(idx)->size.y;
+}

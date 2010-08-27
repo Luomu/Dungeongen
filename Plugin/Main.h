@@ -106,7 +106,11 @@ public:
 	//non-param expressions
 	long eGetTileAt(LPVAL params, ExpReturn& ret);
 	long eGetWallBetweenPoints(LPVAL params, ExpReturn& ret);
-	//TODO: Get room bounds
+	long eRoomCount(LPVAL params, ExpReturn& ret) { if(dungeon) return ret = dungeon->getRoomCount(); else return ret = 0; }
+	long eRoomTopLeftX(LPVAL params, ExpReturn& ret);
+	long eRoomTopLeftY(LPVAL params, ExpReturn& ret);
+	long eRoomWidth(LPVAL params, ExpReturn& ret);
+	long eRoomHeight(LPVAL params, ExpReturn& ret);
 
 	////////////////////////////////////////////////////
 	// Data members

@@ -56,7 +56,6 @@ void ExtObject::placeTile(CRunObjType* objtype, int tileX, int tileY, CRunLayer*
 		obj->info.x += options.tileSize / 2;
 		obj->info.y += options.tileSize / 2;
 		obj->info.angle = angle;
-		obj->info.w = options.tileSize / 2;
 	}
 	obj->UpdateBoundingBox();
 }
