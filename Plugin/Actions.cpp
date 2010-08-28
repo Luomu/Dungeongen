@@ -32,6 +32,26 @@ void ExtObject::placeTile(CRunObjType* objtype, int tileX, int tileY, CRunLayer*
 	obj->UpdateBoundingBox();
 }
 
+void ExtObject::placeWall(CRunObjType* objtype, int tileX, int tileY, CRunLayer* layer,
+						  int angle)
+{
+	if(objtype == 0) return;
+	CRunObject* obj = pRuntime->CreateObject(objtype, layer->number, pLayout);
+	obj->info.x = tileX * options.tileSize;
+	obj->info.y = tileY * options.tileSize;
+	obj->info.w = options.thinWallWidth;
+	obj->info.h = options.tileSize;
+	obj->info.angle = angle;
+	if(angle == 0) {
+	}
+	if(angle == 90) {
+		obj->info.h += options.thinWallWidth;
+		obj->info.x += options.thinWallWidth;
+		obj->info.y -= options.thinWallWidth;
+	}
+	obj->UpdateBoundingBox();
+}
+
 //this version builds a 2*1 tiles version of the dungeon to get rid
 //of this walls and between-tiles door placement
 long ExtObject::aBuildToLayoutExpanded(LPVAL params)
@@ -152,9 +172,9 @@ long ExtObject::aBuildToLayout(LPVAL params)
 
 	//walls, doors
 	int wall = 0;
-	for(unsigned int y = 1; y < dungeon->getY() - 1; ++y) {
-		for(unsigned int x = 1; x < dungeon->getX() - 1; ++x) {
-			if(dungeon->getDungeonAt(x, y) == JBDungeon::c_WALL) continue;
+	for(unsigned int y = 1; y < dungeon->getY(); ++y) {
+		for(unsigned int x = 1; x < dungeon->getX(); ++x) {
+			/*if(dungeon->getDungeonAt(x, y, 0) == JBDungeon::c_WALL) continue;*/
 			JBMazePt center(x, y, 0);
 			JBMazePt north(x, y - 1, 0);
 			JBMazePt east(x + 1, y, 0);
@@ -163,8 +183,14 @@ long ExtObject::aBuildToLayout(LPVAL params)
 
 			int wall = dungeon->getWallBetween(north, center);
 			if(wall == JBDungeonWall::c_WALL) {
-				placeWall(objtypes[tile_WALL], x, y, layer);
+				placeWall(objtypes[tile_WALL], x + 1, y, layer, 90);
 			}
+			/*wall = dungeon->getWallBetween(east, center);
+			if(wall == JBDungeonWall::c_WALL)
+				placeWall(objtypes[tile_WALL], x + 1, y, layer, 0);*/
+			wall = dungeon->getWallBetween(west, center);
+			if(wall == JBDungeonWall::c_WALL)
+				placeWall(objtypes[tile_WALL], x, y, layer, 0);
 		}
 	}
 	return 0;

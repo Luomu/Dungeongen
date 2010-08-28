@@ -130,6 +130,7 @@ private:
 	std::map<int, CRunObjType*> objtypes;
 
 	void placeTile(CRunObjType* obj, int tileX, int tileY, CRunLayer* layer, int angle = -1);
+	void placeWall(CRunObjType* obj, int tileX, int tileY, CRunLayer* layer, int angle = -1);
 };
 
 //////////// EDITTIME INFO ////////////
