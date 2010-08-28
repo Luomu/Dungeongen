@@ -33,7 +33,7 @@ void ExtObject::placeTile(CRunObjType* objtype, int tileX, int tileY, CRunLayer*
 }
 
 void ExtObject::placeWall(CRunObjType* objtype, int tileX, int tileY, CRunLayer* layer,
-						  int angle)
+						  int angle, bool door)
 {
 	if(objtype == 0) return;
 	CRunObject* obj = pRuntime->CreateObject(objtype, layer->number, pLayout);
@@ -43,11 +43,19 @@ void ExtObject::placeWall(CRunObjType* objtype, int tileX, int tileY, CRunLayer*
 	obj->info.h = options.tileSize;
 	obj->info.angle = angle;
 	if(angle == 0) {
+		if(door) { //doors are placed in center
+			obj->info.x += options.thinWallWidth / 2;
+			obj->info.y += options.tileSize/2;
+		}
 	}
 	if(angle == 90) {
 		obj->info.h += options.thinWallWidth;
 		obj->info.x += options.thinWallWidth;
 		obj->info.y -= options.thinWallWidth;
+		if(door) {
+			obj->info.x = tileX * options.tileSize - options.tileSize / 2 + options.thinWallWidth;
+			obj->info.y += options.thinWallWidth/2;
+		}
 	}
 	obj->UpdateBoundingBox();
 }
@@ -182,15 +190,15 @@ long ExtObject::aBuildToLayout(LPVAL params)
 			JBMazePt south(x, y + 1, 0);
 
 			int wall = dungeon->getWallBetween(north, center);
-			if(wall == JBDungeonWall::c_WALL) {
-				placeWall(objtypes[tile_WALL], x + 1, y, layer, 90);
-			}
-			/*wall = dungeon->getWallBetween(east, center);
 			if(wall == JBDungeonWall::c_WALL)
-				placeWall(objtypes[tile_WALL], x + 1, y, layer, 0);*/
+				placeWall(objtypes[tile_WALL], x + 1, y, layer, 90);
+			if(wall == JBDungeonWall::c_DOOR)
+				placeWall(objtypes[tile_DOOR], x + 1, y, layer, 90, true);
 			wall = dungeon->getWallBetween(west, center);
 			if(wall == JBDungeonWall::c_WALL)
 				placeWall(objtypes[tile_WALL], x, y, layer, 0);
+			if(wall == JBDungeonWall::c_DOOR)
+				placeWall(objtypes[tile_DOOR], x, y, layer, 0, true);
 		}
 	}
 	return 0;
