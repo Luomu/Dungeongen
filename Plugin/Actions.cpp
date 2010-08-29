@@ -64,10 +64,10 @@ void ExtObject::placeWall(CRunObjType* objtype, int tileX, int tileY, CRunLayer*
 //of this walls and between-tiles door placement
 long ExtObject::aBuildToLayoutExpanded(LPVAL params)
 {
+	if(dungeon == 0) return 0;
 	CRunLayer* layer = params[0].GetLayerParam(pRuntime, pLayout);
+	if(layer == 0) return 0;
 	CRunObjType* objtype = 0;
-	if(layer == 0)
-		return 0;
 
 	const int w = dungeon->getX() * 2 + 1;
 	const int h = dungeon->getY() * 2 + 1;

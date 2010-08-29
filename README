@@ -1,14 +1,16 @@
-Workflow:
+Dungeon Generator plugin for Scirra Construct.
+Based on Jamis Buck's dnd-dungeon.
+
+The normal workflow is as follows:
 - Set object mapping
 - Set parameters
 - Generate
 - Build to layer
 
-Set object mapping:
-Set (sprite) objects to use with the "build to layer" action.
-Currently there's only 0 = empty space, 1 = wall.
+If you want more control over the process, you need to build to layer yourself using events or Python.
 
 Parameters--
+Size: dungeon width/height in tiles. Actual size can be +-1 tile to accommodate walls.
 Tile size: Width/height of one tile in pixels
 Seed: Number to base the randomization on. Same number = always same result.
 Randomness: 0 - very straight corridors, 100 - lots of twists
@@ -16,10 +18,18 @@ Sparseness: 0 - very tight density, 100 - very sparse density
 Dead end removal: percentage of dead ends the generator does its best to remove.
 Room count: max/min.
 Room dimensions: max/min height/width in tiles.
-Size: dungeon width/height in tiles.
 
-Expressions available for all of the above.
+Expressions available for all of the above. In addition you can fetch room top left x/y, bottom right x/y and a thin wall type between two tiles (none, wall, door).
 
-For mazes (and other purposes too):
-Starting point in the maze
-Ending point
+For mazes (and other game purposes too) you can se the starting point and goal point of a maze.
+
+Build to layout:
+The dungeon is built to the layer of your choosing.
+
+Build to layout (expanded):
+To ensure all walls are at least one tile in size and to allow better door placement, the map size is epanded to x2 + 1 tiles. All corridors stay one tile wide.
+
+Set object mapping:
+Set (sprite) objects to use with the "build to layer" action. There's only rock, tunnel, room, (thin) wall and door tiles.
+
+That should be all, see the example .cap and experiment!
